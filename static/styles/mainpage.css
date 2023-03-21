@@ -1,0 +1,35 @@
+body {
+    margin: 0px;
+}
+
+header {
+    display: flex;
+    height: 44px;
+    background-color: #FFD9C0;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+nav {
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.mainpage-link {
+    text-decoration: none;
+    color: black;
+    text-indent: 12px;
+}
+
+.cam-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cam-view {
+    width: calc(100% - 40px);
+    max-width: 960px;
+}
