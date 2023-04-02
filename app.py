@@ -1,5 +1,6 @@
 import cv2
 from flask import Flask, Response, render_template
+from detection.object_detection import detect
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ def gen_frames():
         success, frame = camera.read()
         if not success:
             break
-        frame = cv2.flip(frame, 1)
+        frame = detect(frame)
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')

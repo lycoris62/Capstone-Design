@@ -24,4 +24,4 @@ htmlcov/
 .coverage.*
 *,cover
 
-cv.py
+object_detection_test/
