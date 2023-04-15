@@ -25,3 +25,4 @@ htmlcov/
 *,cover
 
 object_detection_test/
+super_resolution/srcnn_model.pt

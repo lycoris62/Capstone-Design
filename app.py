@@ -1,6 +1,7 @@
 import cv2
 from flask import Flask, Response, render_template
 from detection.object_detection import detect
+from super_resolution.super_resolution import super_res
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ def gen_frames():
         success, frame = camera.read()
         if not success:
             break
+        frame = super_res(frame)
         frame = detect(frame)
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
