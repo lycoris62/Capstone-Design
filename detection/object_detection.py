@@ -3,23 +3,22 @@ import numpy as np
 import os
 
 CUR_DIR = os.path.abspath('.')
-weights_path = os.path.join(CUR_DIR, 'detection/yolov3.weights')
-config_path = os.path.join(CUR_DIR, 'detection/yolov3.cfg')
+yolov3_weights_path = os.path.join(CUR_DIR, 'detection/yolov3.weights')
+yolov3_config_path = os.path.join(CUR_DIR, 'detection/yolov3.cfg')
 coco_path = os.path.join(CUR_DIR, 'detection/coco.names')
 
-def detect(img):
-    img = cv2.flip(img, 1)
-    # Yolo 로드
-    net = cv2.dnn.readNet(weights_path, config_path)
-    classes = []
-    with open(coco_path, "r") as f:
-        classes = [line.strip() for line in f.readlines()]
-    layer_names = net.getLayerNames()
-    output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
-    # colors = np.random.uniform(0, 255, size=(len(classes), 3))
-    colors = np.random.uniform(0, 0, size=(len(classes), 3))
+# Yolo 로드
+net = cv2.dnn.readNet(yolov3_weights_path, yolov3_config_path)
+classes = []
+with open(coco_path, "r") as f:
+    classes = [line.strip() for line in f.readlines()]
+layer_names = net.getLayerNames()
+output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+colors = np.random.uniform(0, 0, size=(len(classes), 3))
 
+def detect(img):
     # 이미지 가져오기
+    img = cv2.flip(img, 1)
     img = cv2.resize(img, None, fx=0.4, fy=0.4)
     height, width, channels = img.shape
     # Detecting objects
