@@ -25,6 +25,7 @@ htmlcov/
 *,cover
 
 object_detection_test/
+detection/yolov3.weights
 super_resolution/srcnn_model.pt
 
 static/images/app/*
