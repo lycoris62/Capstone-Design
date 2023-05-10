@@ -14,12 +14,14 @@
     </nav>
 </header>
 <div class="cam-container">
-        <img class="cam-view" src="{{ url_for('video_feed') }}"/>
-<!--    <img class="cam-view" src="{{ url_for('static',filename='images/test-image.png') }}"/>-->
+    <form action="/uploader"
+          method="POST"
+          enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit"/>
+    </form>
 </div>
 <div class="button-container">
-    <button class="button" onclick="location.href='#'">Control</button>
-    <button class="button" onclick="location.href='#'" hidden="hidden">Setting</button>
 </div>
 
 </body>

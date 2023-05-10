@@ -26,3 +26,5 @@ htmlcov/
 
 object_detection_test/
 super_resolution/srcnn_model.pt
+
+static/images/app/*

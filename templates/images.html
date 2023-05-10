@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
+    <title>Telescopai</title>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <a class="mainpage-link" href="/">Telescopai</a>
+    </nav>
+</header>
+<div>
+    <div class="container">
+        <img class="view" src="{{ url_for('static',filename=original_image) }}"/>
+    </div>
+    <div class="container">
+        {% for image in images %}
+        <div class="object-view" style="display: flex; flex: 1; flex-direction: row">
+            <img class="view" src="{{ url_for('static',filename=image[0]) }}"/>
+            <img class="view" src="{{ url_for('static',filename=image[1]) }}"/>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
