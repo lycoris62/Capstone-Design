@@ -1,6 +1,6 @@
-import json
 import os
 from datetime import datetime
+from glob import glob
 
 import cv2
 from flask import Flask, render_template, redirect, request, url_for
@@ -13,44 +13,108 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 업로드 16MB 제한
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 CUR_DIR = os.path.abspath('.')
+mainUrl = "/"
+
+
+def is_error(request_files):
+    if 'file' not in request_files:
+        return "파일이 없습니다."
+
+    f = request_files['file']
+    if f.filename == '':
+        return "파일이 없습니다."
+
+    if not f.filename.split(".")[-1] in ALLOWED_EXTENSIONS:
+        return "허용되지 않는 확장자입니다."
+    return ""
+
+
+def create_img_directory_name(now):
+    return str(now).replace(" ", "_")
+
+
+def create_img_id(now):
+    return int(now.timestamp() * 1000000)
+
+
+def parse_img_id(img_id):
+    return datetime.fromtimestamp(img_id / 1000000)
+
+
+def create_unique_directory_name(now):
+    original_img_save_path = f'{CUR_DIR}/static/images/app/{create_img_directory_name(now)}'
+    return {
+        "original": original_img_save_path,
+        "object": f'{original_img_save_path}/objects_original',
+        "super": f'{original_img_save_path}/objects_super',
+    }
+
+
+def create_img_directory(now):
+    path_names = create_unique_directory_name(now)
+    os.makedirs(path_names["original"])
+    os.makedirs(path_names["object"])
+    os.makedirs(path_names["super"])
+    return path_names
+
 
 @app.route("/")
 def hello():
-    return render_template('index.html')
+    error_msg = request.args.get('error_msg', "")
+    return render_template('index.html', error_msg=error_msg)
+
 
 @app.route("/images")
 def images():
-    image_urls = request.args['image_urls']
-    original_image = request.args['original_image'][1:-1]
-    return render_template('images.html', original_image=original_image, images=json.loads(image_urls))
+    img_id = request.args.get("img_id", "")
+    if img_id == "":
+        return redirect(f"{mainUrl}?error_msg=잘못된 접근입니다.")
+
+    directory_name = create_img_directory_name(parse_img_id(int(img_id)))
+    ele_list = glob(f"static/images/app/{directory_name}/*")
+    if len(ele_list) == 0:
+        return redirect(f"{mainUrl}?error_msg=잘못된 접근입니다.")
+
+    original_image = ""
+    for ele in ele_list:
+        if ele.split("/")[-1].startswith("original_"):
+            original_image = ele[6:]
+            break
+
+    images = []
+    obj_list = glob(f"static/images/app/{directory_name}/objects_original/*")
+    for obj in obj_list:
+        obj_filename = obj.split("/")[-1]
+        images.append([
+            f"images/app/{directory_name}/objects_original/{obj_filename}",
+            f"images/app/{directory_name}/objects_super/{obj_filename}"
+        ])
+
+    return render_template(
+        'images.html',
+        original_image=original_image,
+        images=images
+    )
+
 
 @app.route("/uploader", methods=["POST"])
 def uploader_file():
-    if 'file' not in request.files:
-        return redirect(request.url)
+    error_msg = is_error(request.files)
+    if error_msg != "":
+        return redirect(f"{mainUrl}?error_msg={error_msg}")
+
     f = request.files['file']
-    if f.filename == '':
-        return redirect(request.url)
-    if not f.filename.split(".")[-1] in ALLOWED_EXTENSIONS:
-        return redirect(request.url)
+    now = datetime.now()
+    paths = create_img_directory(now)
 
-    now_time = str(datetime.now()).replace(" ", "_")
-    file_path = f'static/images/app/{now_time}'
-    os.makedirs(file_path)
-    save_to = f'{file_path}/{secure_filename(f.filename)}'
-    image_save_path = os.path.join(CUR_DIR, save_to)
-    f.save(image_save_path)
-    original_image = cv2.imread(save_to)
-    object_list = detect(original_image, file_path, f.filename.split(".")[-1])
+    original_save_to = f'{paths["original"]}/original_{secure_filename(f.filename)}'
+    f.save(original_save_to)
 
-    res = [f"images/app/{now_time}/objects_original/{object_img}" for object_img in object_list]
-    super_resolution(res)
-    res = [[ele, ele.replace("objects_original", "objects_super")] for ele in res]
+    detect(cv2.imread(original_save_to), paths["object"], f.filename.split(".")[-1])
+    super_resolution(paths["original"])
 
-    image_urls = json.dumps(res)
-    origin_image = json.dumps("/".join(save_to.split("/")[1:]))
+    return redirect(url_for('images', img_id=create_img_id(now)))
 
-    return redirect(url_for('images', image_urls=image_urls, original_image=origin_image))
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True

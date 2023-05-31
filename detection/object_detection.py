@@ -5,8 +5,6 @@ import os
 CUR_DIR = os.path.abspath('.')
 yolov3_weights_path = os.path.join(CUR_DIR, 'detection/yolov3.weights')
 yolov3_config_path = os.path.join(CUR_DIR, 'detection/yolov3.cfg')
-# yolov3_tiny_weights_path = os.path.join(CUR_DIR, 'detection/yolov3_tiny.weights')
-# yolov3_tiny_config_path = os.path.join(CUR_DIR, 'detection/yolov3_tiny.cfg')
 coco_path = os.path.join(CUR_DIR, 'detection/coco.names')
 
 # Yolo 로드
@@ -17,6 +15,7 @@ with open(coco_path, "r") as f:
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 0, size=(len(classes), 3))
+threshold = 0.25
 
 def detect(img, file_path, ext):
     # 이미지 가져오기
@@ -35,7 +34,7 @@ def detect(img, file_path, ext):
             scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
-            if confidence > 0.5:
+            if confidence > threshold:
                 # Object detected
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
@@ -48,22 +47,16 @@ def detect(img, file_path, ext):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.25, 0.25)
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, threshold, 0.25)
     idx = 0
-    objects_path = f'{file_path}/objects_original'
-    os.makedirs(objects_path)
-    res = []
     for i in range(len(boxes)):
         if i in indexes:
             x, y, w, h = boxes[i]
             if x < 0 or y < 0:
                 continue
             label = str(classes[class_ids[i]])
-            print(label)
             obj = img[y:y+h, x:x+w]
             image_name = f'{label}_{idx}.{ext}'
-            res.append(image_name)
-            cv2.imwrite(os.path.join(objects_path, image_name), obj)
+            cv2.imwrite(os.path.join(file_path, image_name), obj)
 
             idx += 1
-    return res
