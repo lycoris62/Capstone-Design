@@ -15,7 +15,7 @@ with open(coco_path, "r") as f:
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 0, size=(len(classes), 3))
-threshold = 0.25
+threshold = 0.5
 
 def detect(img, file_path, ext):
     # 이미지 가져오기

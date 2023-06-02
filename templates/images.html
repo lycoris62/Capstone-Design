@@ -16,12 +16,14 @@
 <div>
     <div class="container">
         <img class="view" src="{{ url_for('static',filename=original_image) }}"/>
+        원본
     </div>
     <div class="container">
+        <p>원본객체 <== ==> 화질개선</p>
         {% for image in images %}
         <div class="object-view" style="display: flex; flex: 1; flex-direction: row">
-            <img class="view" src="{{ url_for('static',filename=image[0]) }}"/>
-            <img class="view" src="{{ url_for('static',filename=image[1]) }}"/>
+            <img class="view" src="{{ url_for('static',filename=image[0]) }}" alt="object-detect-original"/>
+            <img class="view" src="{{ url_for('static',filename=image[1]) }}" alt="object-detect-super-resolution"/>
         </div>
         {% endfor %}
     </div>

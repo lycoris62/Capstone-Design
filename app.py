@@ -10,7 +10,7 @@ from detection.object_detection import detect
 from super_resolution.super_resolution import super_resolution
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 업로드 16MB 제한
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 업로드 5MB 제한
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 CUR_DIR = os.path.abspath('.')
 mainUrl = "/"
@@ -117,6 +117,4 @@ def uploader_file():
 
 
 if __name__ == '__main__':
-    app.jinja_env.auto_reload = True
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(debug=True, host='0.0.0.0', port=4444)
+    app.run(host='0.0.0.0')

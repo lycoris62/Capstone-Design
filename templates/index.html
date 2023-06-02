@@ -35,8 +35,17 @@
         <label class="file-label" for="submit-btn">분석</label>
         <input type="submit" id="submit-btn" class="submit" style="display: none"/>
     </form>
+    <div class="error-container">{{error_msg}}</div>
+    <div class="guide-container">
+        <ul>
+            <li>Telescopai는 이미지를 분석하여 객체를 검출해낸 뒤, 해당 객체를 잘라내어 화질을 개선해주는 서비스입니다.</li>
+            <li>사진을 드래그 하거나 업로드 한 뒤 분석 버튼을 누르면 분석이 시작됩니다.</li>
+            <li>확장자는 png, jpg, jpeg 만 가능하며 최대 15MB의 파일만 업로드 가능합니다.</li>
+            <li>분석이 완료되면 화면에 결과가 나타나며 맨 위에는 원본 사진이, 이후부터는 왼쪽은 객체사진, 오른쪽은 화질개선 사진이 나타납니다.</li>
+            <li><a href="/images?img_id=1685682026373274" class="link">여기</a>를 눌러 예시를 확인해보세요!</li>
+        </ul>
+    </div>
 </div>
-<p>{{error_msg}}</p>
 
 <script src="{{ url_for('static',filename='js/mainpage.js') }}"></script>
 </body>
