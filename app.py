@@ -71,6 +71,8 @@ def images():
         return redirect(f"{mainUrl}?error_msg=잘못된 접근입니다.")
 
     directory_name = create_img_directory_name(parse_img_id(int(img_id)))
+    print("directory_name: ", directory_name)
+    print("img_id: ", img_id)
     ele_list = glob(f"static/images/app/{directory_name}/*")
     if len(ele_list) == 0:
         return redirect(f"{mainUrl}?error_msg=잘못된 접근입니다.")
@@ -87,7 +89,8 @@ def images():
         obj_filename = obj.split("/")[-1]
         images.append([
             f"images/app/{directory_name}/objects_original/{obj_filename}",
-            f"images/app/{directory_name}/objects_super/{obj_filename}"
+            f"images/app/{directory_name}/objects_super/{obj_filename}",
+            obj_filename.split(".")[0]
         ])
 
     return render_template(

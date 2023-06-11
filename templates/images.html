@@ -35,6 +35,7 @@
             <img class="view" src="{{ url_for('static',filename=image[0]) }}" alt="object-detect-original"/>
             <img class="view" src="{{ url_for('static',filename=image[1]) }}" alt="object-detect-super-resolution"/>
         </div>
+        <p class="text-box-detail">{{image[2]}}</p>
         {% endfor %}
     </div>
 </div>
