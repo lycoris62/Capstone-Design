@@ -11,7 +11,7 @@ from super_resolution.super_resolution import super_resolution
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 업로드 5MB 제한
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'PNG', 'JPEG', 'JPG'}
 CUR_DIR = os.path.abspath('.')
 mainUrl = "/"
 

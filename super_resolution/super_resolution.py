@@ -6,6 +6,7 @@ import cv2
 import glob
 
 CUR_DIR = os.path.abspath('.')
+model_name = "srcnn_model_0611_1845.pt"
 
 
 class SRCNN(nn.Module):
@@ -25,7 +26,7 @@ class SRCNN(nn.Module):
 
 
 model = SRCNN()
-model.load_state_dict(torch.load(os.getcwd() + "/super_resolution/srcnn_model.pt", map_location="cpu"))
+model.load_state_dict(torch.load(os.getcwd() + f"/super_resolution/{model_name}", map_location="cpu"))
 model.eval()
 
 
