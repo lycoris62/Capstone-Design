@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <title>Telescopai</title>
 </head>
 <body>
@@ -15,11 +16,20 @@
 </header>
 <div>
     <div class="container">
-        <img class="view" src="{{ url_for('static',filename=original_image) }}"/>
-        원본
+        <img class="view" src="{{ url_for('static',filename=original_image) }}" alt=""/>
+        <div style="display: flex; flex-direction: row;">
+            <div class="text-box-rehome">
+                <a style="text-decoration: none; color: white;" href="/">되돌아가기</a>
+            </div>
+        </div>
     </div>
     <div class="container">
-        <p>원본객체 <== ==> 화질개선</p>
+        <div style="margin: 30px 0;">
+            <span class="text-box-detail">원본객체</span>
+            <i class="fa-solid fa-circle-left fa-xl"></i>
+            <i class="fa-solid fa-circle-left fa-rotate-180 fa-xl"></i>
+            <span class="text-box-detail">화질개선</span>
+        </div>
         {% for image in images %}
         <div class="object-view" style="display: flex; flex: 1; flex-direction: row">
             <img class="view" src="{{ url_for('static',filename=image[0]) }}" alt="object-detect-original"/>

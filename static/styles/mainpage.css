@@ -58,13 +58,52 @@ nav {
 
 .file-label {
     margin-top: 30px;
-    background-color: #5b975b;
+    background-color: #99DBF5;
     color: #fff;
     text-align: center;
     padding: 10px 10px;
-    /*width: 65%;*/
     border-radius: 6px;
     cursor: pointer;
+}
+
+.file-label-submit {
+    margin-top: 30px;
+    background-color: #8CC0DE;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.text-box-origin {
+    background-color: #99DBF5;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 3px;
+}
+
+.text-box-rehome {
+    background-color: #3D56B2;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.text-box-detail {
+    background-color: #5C7AEA;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 3px;
 }
 
 .submit {
@@ -126,7 +165,7 @@ nav {
 
 .error-container {
     font-size: large;
-    color: red;
+    color: crimson;
     margin-top: 20px;
 }
 
@@ -140,6 +179,5 @@ nav {
 }
 
 .guide-container li {
-    /*list-style-type: none;*/
     margin-bottom: 10px;
 }
